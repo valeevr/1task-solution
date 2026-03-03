@@ -1,17 +1,17 @@
 package ru.valeevr.service;
 
+import ru.valeevr.model.ValidateFileResult;
+
 import java.io.File;
 
 public class FileService {
-    public boolean validateFile(File file) {
+    public ValidateFileResult validateFile(File file) {
         if (!file.exists()) {
-            System.err.println("Файл не найден.");
-            return false;
+            return new ValidateFileResult.Error("Файл не найден.");
         }
         if (!file.isFile()) {
-            System.err.println("Это не файл, а директория.");
-            return false;
+            return new ValidateFileResult.Error("Это не файл, а директория.");
         }
-        return true;
+        return new ValidateFileResult.Valid();
     }
 }

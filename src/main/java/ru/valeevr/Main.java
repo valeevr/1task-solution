@@ -1,5 +1,6 @@
 package ru.valeevr;
 
+import ru.valeevr.model.ValidateFileResult;
 import ru.valeevr.service.FileService;
 
 import java.io.File;
@@ -15,7 +16,11 @@ public class Main {
         System.out.print("Путь к файлу: ");
         File file = new File(console.nextLine());
 
-        if (!fileService.validateFile(file)) return;
+        ValidateFileResult validateFileResult = fileService.validateFile(file);
+        if (validateFileResult instanceof ValidateFileResult.Error validateFileResultError) {
+            System.err.println(validateFileResultError.message());
+            return;
+        }
 
         System.out.print("Кодировка: ");
         String encoding = console.nextLine();
