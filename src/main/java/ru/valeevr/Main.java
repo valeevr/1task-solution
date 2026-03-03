@@ -1,17 +1,47 @@
 package ru.valeevr;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+import java.io.File;
+import java.io.IOException;
+import java.util.Scanner;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+public class Main {
+    public static void main(String[] args) {
+        Scanner console = new Scanner(System.in);
+        FileAnalyzer analyzer = new FileAnalyzer();
+
+        System.out.print("Путь к файлу: ");
+        File file = new File(console.nextLine());
+
+        if (!validateFile(file)) return;
+
+        System.out.print("Кодировка: ");
+        String encoding = console.nextLine();
+
+        try {
+            FileStatistics stats = analyzer.analyze(file, encoding);
+
+            System.out.print("Введите слово для поиска: ");
+            String target = console.nextLine();
+
+            int foundCount = analyzer.countOccurrences(file, encoding, target);
+            stats.setOccurrences(foundCount);
+
+            System.out.println("\n" + stats);
+
+        } catch (IOException e) {
+            System.err.println("Ошибка при работе с файлом: " + e.getMessage());
         }
+    }
+
+    private static boolean validateFile(File file) {
+        if (!file.exists()) {
+            System.err.println("Файл не найден.");
+            return false;
+        }
+        if (!file.isFile()) {
+            System.err.println("Это не файл, а директория.");
+            return false;
+        }
+        return true;
     }
 }
