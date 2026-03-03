@@ -17,8 +17,8 @@ public class Main {
         File file = new File(console.nextLine());
 
         ValidateFileResult validateFileResult = fileService.validateFile(file);
-        if (validateFileResult instanceof ValidateFileResult.Error validateFileResultError) {
-            System.err.println(validateFileResultError.message());
+        if (validateFileResult instanceof ValidateFileResult.Error(String message)) {
+            System.err.println(message);
             return;
         }
 
